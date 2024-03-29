@@ -108,6 +108,8 @@ float gVoltageCalibrationFactor;
 
 float gCurrentCalibrationFactor;
 
+float gCurrentCalib;
+
 uint16_t gMaxCurrentA;
 
 uint16_t gModbusId;
@@ -156,6 +158,14 @@ iotwebconf::FloatTParameter currentFactor =
     placeholder("e.g. 1100").
    build();
 
+iotwebconf::FloatTParameter currentFactorCalib =
+   iotwebconf::Builder<iotwebconf::FloatTParameter>("currentC").
+    label("Current Verschiebung").
+    defaultValue(-10).
+    step(1).
+    placeholder("e.g. -10").
+   build();
+   
 IotWebConfParameterGroup shuntGroup = IotWebConfParameterGroup("ShuntConf", "Smart shunt");
 
 iotwebconf::UIntTParameter<uint16_t> battCapacity =
@@ -254,6 +264,7 @@ void wifiSetShuntVals() {
     maxCurrent.value() = gMaxCurrentA;
     voltageFactor.value() = gVoltageCalibrationFactor;
     currentFactor.value() = gCurrentCalibrationFactor;
+    currentFactorCalib.value() = gCurrentCalib;
 }
 
 void wifiSetModbusId() {
@@ -303,7 +314,7 @@ void wifiSetup()
   sysConfGroup.addItem(&maxCurrent);
   sysConfGroup.addItem(&voltageFactor);
   sysConfGroup.addItem(&currentFactor);
-
+  sysConfGroup.addItem(&currentFactorCalib);
 
   shuntGroup.addItem(&battCapacity);
   shuntGroup.addItem(&chargeEfficiency);
@@ -390,6 +401,7 @@ void handleRoot()
   s += "<li>Shunt max current : " + String(gMaxCurrentA, 3) + " A";
   s += "<li>VoltageCalibration: " + String(gVoltageCalibrationFactor, 5);
   s += "<li>CurrentCalibration: " + String(gCurrentCalibrationFactor, 5);
+  s += "<li>0 Punkt Verschiebung : " + String(gCurrentCalib, 1) + " mA";
   s += "<li>Batt capacity     : " + String(gCapacityAh) + " Ah";
   s += "<li>Batt efficiency   : " + String(gChargeEfficiencyPercent) + " %";
   s += "<li>Min soc           : " + String(gMinPercent) + " %";
@@ -428,7 +440,7 @@ void convertParams() {
     gShuntResistancemR = shuntResistance.value();
     gVoltageCalibrationFactor = voltageFactor.value() / 1000.0;
     gCurrentCalibrationFactor = currentFactor.value() / 1000.0;
-
+    gCurrentCalib = currentFactorCalib.value() ;
     gMaxCurrentA = maxCurrent.value();
     gCapacityAh = battCapacity.value();
     gChargeEfficiencyPercent = chargeEfficiency.value();
