@@ -306,6 +306,7 @@ void updateAhCounter() {
 
     //float shuntVoltage = ina.readShuntVoltage();
     float current = ina.readShuntCurrent() * gCurrentCalibrationFactor;
+    current = current + (gCurrentCalib /1000) ;
     //SERIAL_DBG.printf("current is: %.2f\n",current);
     gBattery.updateConsumption(current,sampleTime,count);
     if(count > 1) {
@@ -338,6 +339,9 @@ void sensorLoop() {
         gBattery.updateStats(now);
         lastUpdate = now;
     }
+//    SERIAL_DBG.print("Current Verschiebung:   ") ;
+//    SERIAL_DBG.print(gCurrentCalib, 1);
+//    SERIAL_DBG.println(" mA");
 /*
      SERIAL_DBG.print("Bus voltage:   ") ;
     SERIAL_DBG.print(ina.readBusVoltage(), 7);
