@@ -1,3 +1,7 @@
+Anmerkungen joklc 
+Habe den code für das erstellen mit der Arduino Software angepasst + einen neuen Parameter konfigurierbar gemacht. Mein in226 zeigt bei wenig
+Leistung ( 1-2 Watt) anstatt negative Werte, positive Werte an, stelle -30 mA ein und so passen die gemessenen Werte besser.
+
 ## Overview
 This project uses an INA226 shunt amplifier to implement some smart shunt functionality.
 It sums up the charges that move through the shunt. With this information it tries to calculate the load status of an attached battery.
