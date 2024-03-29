@@ -18,6 +18,7 @@ extern uint16_t gFullDelayS;
 extern float gShuntResistancemR;
 extern float gVoltageCalibrationFactor;
 extern float gCurrentCalibrationFactor;
+extern float gCurrentCalib;
 extern uint16_t gMaxCurrentA;
 extern uint16_t gModbusId;
 extern bool gSensorInitialized;
@@ -58,5 +59,3 @@ extern char gCustomName[64];
 #else
 #define SERIAL_MODBUS SERIAL_VICTRON
 #endif
-
-
